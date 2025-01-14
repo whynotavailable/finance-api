@@ -20,6 +20,13 @@ impl AppError {
     pub fn new(code: StatusCode, message: String) -> AppError {
         AppError { code, message }
     }
+
+    pub fn not_found() -> AppError {
+        AppError {
+            code: StatusCode::NOT_FOUND,
+            message: "Not Found".to_string(),
+        }
+    }
 }
 
 impl IntoResponse for AppError {
