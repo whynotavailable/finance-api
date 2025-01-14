@@ -12,6 +12,6 @@ pub async fn status() -> AppResult<Json<Status>> {
 
 pub fn main_routes() -> Router<AppState> {
     Router::new()
-        .route("/", get(status))
+        .route("/status", get(status))
         .layer(CorsLayer::permissive())
 }
