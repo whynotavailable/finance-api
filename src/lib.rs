@@ -9,7 +9,7 @@ mod routes;
 pub async fn setup() {
     let pool = PgPoolOptions::new()
         .max_connections(10)
-        .connect("postgres://postgres:garden@localhost/harvester")
+        .connect("postgres://postgres:garden@localhost/home")
         .await
         .unwrap();
 
