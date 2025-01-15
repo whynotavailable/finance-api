@@ -46,3 +46,7 @@ impl IntoResponse for AppError {
 /// Use this for most functions that return a result
 pub type AppResult<T> = Result<T, AppError>;
 pub type JsonResult<T> = AppResult<Json<T>>;
+
+pub fn json_ok<T>(o: T) -> JsonResult<T> {
+    return Ok(Json(o));
+}

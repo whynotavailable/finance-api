@@ -1,4 +1,4 @@
-use crate::errors::{AppError, AppResult, JsonResult};
+use crate::errors::{json_ok, AppError, AppResult, JsonResult};
 use crate::models::{AppState, SimpleResponse};
 use axum::extract::{Query, State};
 use axum::routing::{get, post};
@@ -8,15 +8,15 @@ use serde::{Deserialize, Serialize};
 use tower_http::cors::CorsLayer;
 use uuid::Uuid;
 
-#[derive(Deserialize)]
+#[derive(Serialize)]
 struct Status {
     status: String,
 }
 
 async fn status() -> JsonResult<Status> {
-    Ok(Json(Status {
+    json_ok(Status {
         status: "Ok".to_string(),
-    }))
+    })
 }
 
 #[derive(Deserialize)]
@@ -35,7 +35,7 @@ async fn add_entry(
         .await
         .map_err(|e| AppError::server_error(e.to_string()))?;
 
-    Ok(Json(SimpleResponse::new("Created!".to_string())))
+    json_ok(SimpleResponse::new("Created!".to_string()))
 }
 
 #[derive(Deserialize)]
