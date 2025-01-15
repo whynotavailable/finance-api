@@ -33,7 +33,7 @@ async fn add_entry(
         .bind(body.account_id)
         .execute(&state.db)
         .await
-        .map_err(|e| AppError::server_error(e.to_string()))?;
+        .map_err(|e| AppError::se(e.to_string()))?;
 
     json_ok(SimpleResponse::new("Created!".to_string()))
 }
@@ -56,7 +56,7 @@ async fn get_balance(
         .bind(query.account_id)
         .fetch_one(&state.db)
         .await
-        .map_err(|e| AppError::server_error(e.to_string()))?;
+        .map_err(|e| AppError::se(e.to_string()))?;
 
     Ok(Json(GetBalanceResponse {
         amount: results.0.with_scale(2),

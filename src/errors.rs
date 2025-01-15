@@ -35,6 +35,11 @@ impl AppError {
             message,
         }
     }
+
+    /// Shorthand for server_error
+    pub fn se(message: String) -> AppError {
+        AppError::server_error(message)
+    }
 }
 
 impl IntoResponse for AppError {
@@ -48,5 +53,5 @@ pub type AppResult<T> = Result<T, AppError>;
 pub type JsonResult<T> = AppResult<Json<T>>;
 
 pub fn json_ok<T>(o: T) -> JsonResult<T> {
-    return Ok(Json(o));
+    Ok(Json(o))
 }
