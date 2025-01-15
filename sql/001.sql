@@ -9,6 +9,8 @@ CREATE TABLE account
     name         TEXT    NOT NULL,
     clear_amount NUMERIC NOT NULL DEFAULT (0)
 );
+INSERT INTO account (id, name)
+VALUES ('78ed4192-03d7-4d60-83d0-e4f530a64417', 'test');
 
 CREATE TABLE category
 (
