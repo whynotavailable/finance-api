@@ -7,11 +7,6 @@ pub struct AppState {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Status {
-    pub status: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
 pub struct SimpleResponse {
     pub value: String,
 }

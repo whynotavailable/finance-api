@@ -1,5 +1,6 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use axum::Json;
 
 /// Global error type
 pub struct AppError {
@@ -27,6 +28,13 @@ impl AppError {
             message: "Not Found".to_string(),
         }
     }
+
+    pub fn server_error(message: String) -> AppError {
+        AppError {
+            code: StatusCode::INTERNAL_SERVER_ERROR,
+            message,
+        }
+    }
 }
 
 impl IntoResponse for AppError {
@@ -37,3 +45,4 @@ impl IntoResponse for AppError {
 
 /// Use this for most functions that return a result
 pub type AppResult<T> = Result<T, AppError>;
+pub type JsonResult<T> = AppResult<Json<T>>;
