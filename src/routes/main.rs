@@ -54,7 +54,9 @@ async fn get_balance(
         .await
         .map_err(|e| AppError::new(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-    Ok(Json(GetBalanceResponse { amount: results.0 }))
+    Ok(Json(GetBalanceResponse {
+        amount: results.0.with_scale(2),
+    }))
 }
 
 pub fn main_routes() -> Router<AppState> {
