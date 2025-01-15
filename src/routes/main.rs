@@ -1,10 +1,11 @@
 use crate::errors::{AppError, AppResult};
 use crate::models::{AppState, SimpleResponse, Status};
-use axum::extract::State;
+use axum::extract::{Query, State};
 use axum::http::StatusCode;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use serde::Deserialize;
+use bigdecimal::BigDecimal;
+use serde::{Deserialize, Serialize};
 use tower_http::cors::CorsLayer;
 use uuid::Uuid;
 
@@ -33,9 +34,33 @@ async fn add_entry(
     Ok(Json(SimpleResponse::new("Created!".to_string())))
 }
 
+#[derive(Deserialize)]
+struct GetBalanceQuery {
+    account_id: Uuid,
+}
+
+#[derive(Serialize)]
+struct GetBalanceResponse {
+    amount: BigDecimal,
+}
+
+async fn get_balance(
+    State(state): State<AppState>,
+    query: Query<GetBalanceQuery>,
+) -> AppResult<Json<GetBalanceResponse>> {
+    let results: (BigDecimal,) = sqlx::query_as("SELECT get_balance($1)")
+        .bind(query.account_id)
+        .fetch_one(&state.db)
+        .await
+        .map_err(|e| AppError::new(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+
+    Ok(Json(GetBalanceResponse { amount: results.0 }))
+}
+
 pub fn main_routes() -> Router<AppState> {
     Router::new()
         .route("/status", get(status))
+        .route("/balance", get(get_balance))
         .route("/entry", post(add_entry))
         .layer(CorsLayer::permissive())
 }

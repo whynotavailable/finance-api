@@ -67,7 +67,7 @@ BEGIN
     ORDER BY stamp DESC
     LIMIT 1;
 
-    SELECT amount
+    SELECT SUM(amount)
     INTO uncleared
     FROM entry
     WHERE account = p_account
