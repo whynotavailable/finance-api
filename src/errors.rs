@@ -40,6 +40,20 @@ impl AppError {
     pub fn se(message: String) -> AppError {
         AppError::server_error(message)
     }
+
+    pub fn bad_request(message: String) -> AppError {
+        AppError {
+            code: StatusCode::BAD_REQUEST,
+            message,
+        }
+    }
+
+    pub fn unauthorized() -> AppError {
+        AppError {
+            code: StatusCode::UNAUTHORIZED,
+            message: "Unauthorized".to_string(),
+        }
+    }
 }
 
 impl IntoResponse for AppError {
